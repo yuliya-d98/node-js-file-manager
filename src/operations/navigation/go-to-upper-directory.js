@@ -1,10 +1,10 @@
-import process from 'node:process';
+import { cwd, chdir } from 'node:process';
 import { join } from 'node:path';
 
 const  goToUpperDirectory = () => {
-    const curDirectory = process.cwd();
+    const curDirectory = cwd();
     const pathToUpperDir = join(curDirectory, '../')
-    process.chdir(pathToUpperDir);
+    chdir(pathToUpperDir);
 }
 
 export default goToUpperDirectory;

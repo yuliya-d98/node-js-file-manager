@@ -3,6 +3,7 @@ import printSystemCPUsInfo from "./print-system-CPUs-info.js";
 import printHomeDirectory from "./print-home-directory.js";
 import printSystemUserName from "./print-system-user-name.js";
 import printCPUArchitecture from "./print-CPU-architecture.js";
+import InvalidInputError from "../../errors/invalid-input-error.js";
 
 const operationSystem = (param) => {
   switch (param) {
@@ -22,7 +23,7 @@ const operationSystem = (param) => {
           printCPUArchitecture();
           break;
       default:
-          console.log('Invalid input');
+          throw new InvalidInputError();
   }
 }
 

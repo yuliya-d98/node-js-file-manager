@@ -1,5 +1,6 @@
 import { readdir } from 'node:fs/promises';
 import { cwd } from 'node:process';
+import OperationFailedError from "../../errors/operation-failed-error.js";
 
 const printCurrentDirectoryEntries = async () => {
     try {
@@ -13,7 +14,7 @@ const printCurrentDirectoryEntries = async () => {
             }));
         console.table(tableData);
     } catch (err) {
-        console.log('Operation failed');
+        throw new OperationFailedError();
     }
 }
 

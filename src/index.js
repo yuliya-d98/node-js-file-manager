@@ -1,25 +1,26 @@
 import process from 'node:process';
 import { homedir } from 'node:os';
-import goToUpperDirectory from "./navigation/go-to-upper-directory.js";
-import goToDedicatedDirectory from "./navigation/go-to-dedicated-directory.js";
-import printCurrentDirectoryEntries from "./navigation/print-current-directory-entries.js";
-import readFile from "./basic-operations-with-files/read-file.js";
-import createEmptyFileInCurrentDirectory from "./basic-operations-with-files/create-empty-file-in-current-directory.js";
-import renameFile from "./basic-operations-with-files/rename-file.js";
-import copyFile from "./basic-operations-with-files/copy-file.js";
-import moveFile from "./basic-operations-with-files/move-file.js";
-import deleteFile from "./basic-operations-with-files/delete-file.js";
-import operationSystem from "./operation-system-info/operation-system.js";
-import printHashForFile from "./hash-calculation/print-hash-for-file.js";
-import compressFile from "./compress-and-decompress/compress-file.js";
-import decompressFile from "./compress-and-decompress/decompress-file.js";
+import goToUpperDirectory from "./operations/navigation/go-to-upper-directory.js";
+import goToDedicatedDirectory from "./operations/navigation/go-to-dedicated-directory.js";
+import printCurrentDirectoryEntries from "./operations/navigation/print-current-directory-entries.js";
+import readFile from "./operations/basic-operations-with-files/read-file.js";
+import createEmptyFileInCurrentDirectory from "./operations/basic-operations-with-files/create-empty-file-in-current-directory.js";
+import renameFile from "./operations/basic-operations-with-files/rename-file.js";
+import copyFile from "./operations/basic-operations-with-files/copy-file.js";
+import moveFile from "./operations/basic-operations-with-files/move-file.js";
+import deleteFile from "./operations/basic-operations-with-files/delete-file.js";
+import operationSystem from "./operations/operation-system-info/operation-system.js";
+import printHashForFile from "./operations/hash-calculation/print-hash-for-file.js";
+import compressFile from "./operations/compress-and-decompress/compress-file.js";
+import decompressFile from "./operations/compress-and-decompress/decompress-file.js";
+import InvalidInputError from "./errors/invalid-input-error.js";
 
 // npm run start -- --username=yuliya
 const cliArguments = process.argv.slice(2);
 const username = cliArguments.find((arg) => arg.startsWith('--username')).slice(11);
 
 const usersHomeDirectory = homedir();
-goToDedicatedDirectory(usersHomeDirectory);
+await goToDedicatedDirectory(usersHomeDirectory);
 
 const printPathToCurrentDirectory = () => {
     const pathToCurrentDir = process.cwd();
@@ -62,11 +63,16 @@ process.stdin.on('data', async (data) => {
 
     const currentOperation = operations.find((oper) => oper.name === operationName);
 
-    if (currentOperation) {
-        await currentOperation.method(...params);
+    try {
+        if (currentOperation) {
+            await currentOperation.method(...params);
+        } else {
+            throw new InvalidInputError();
+        }
+    } catch (e) {
+        console.log(e.message)
+    } finally {
         printPathToCurrentDirectory();
-    } else {
-        console.log('Invalid input');
     }
 })
 
