@@ -72,6 +72,9 @@ process.stdin.on('data', async (data) => {
     }
 })
 
+process.on('SIGINT', () => {
+    process.exit();
+});
 process.on('exit', (code) => {
     console.log(`Thank you for using File Manager, ${username}, goodbye!`);
 });
