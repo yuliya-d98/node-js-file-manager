@@ -1,8 +1,8 @@
 import OperationFailedError from "../../errors/operation-failed-error.js";
 import { access, appendFile } from 'node:fs/promises';
-import InvalidInputError from "../../errors/invalid-input-error.js";
 import { cwd } from 'node:process';
 import { join } from 'node:path';
+
 const createEmptyFileInCurrentDirectory = async (filename) => {
     const curDirectory = cwd();
     const filePath = join(curDirectory, filename);
@@ -10,7 +10,7 @@ const createEmptyFileInCurrentDirectory = async (filename) => {
     try {
         await access(filePath);
         // file already exists
-        throw new InvalidInputError();
+        throw new OperationFailedError();
     } catch (error) {
         // no access to file
         if (error.code === 'ENOENT') {

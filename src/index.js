@@ -14,6 +14,7 @@ import printHashForFile from "./operations/hash-calculation/print-hash-for-file.
 import compressFile from "./operations/compress-and-decompress/compress-file.js";
 import decompressFile from "./operations/compress-and-decompress/decompress-file.js";
 import InvalidInputError from "./errors/invalid-input-error.js";
+import printPathToCurrentDirectory from "./utils/print-path-to-current-directory.js";
 
 // npm run start -- --username=yuliya
 const cliArguments = process.argv.slice(2);
@@ -21,11 +22,6 @@ const username = cliArguments.find((arg) => arg.startsWith('--username')).slice(
 
 const usersHomeDirectory = homedir();
 await goToDedicatedDirectory(usersHomeDirectory);
-
-const printPathToCurrentDirectory = () => {
-    const pathToCurrentDir = process.cwd();
-    console.log(`You are currently in ${pathToCurrentDir}`);
-}
 
 console.log(`Welcome to the File Manager, ${username}!`);
 printPathToCurrentDirectory();
