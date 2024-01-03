@@ -1,11 +1,11 @@
-import InvalidInputError from "../errors/invalid-input-error.js";
 import { access } from 'node:fs/promises';
+import OperationFailedError from "../errors/operation-failed-error.js";
 
 const checkIfPathValid = async (path) => {
     try {
         await access(path);
     } catch {
-        throw new InvalidInputError();
+        throw new OperationFailedError();
     }
 }
 
