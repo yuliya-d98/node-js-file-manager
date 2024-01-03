@@ -1,6 +1,6 @@
 import InvalidInputError from "../../errors/invalid-input-error.js";
 import OperationFailedError from "../../errors/operation-failed-error.js";
-import { join, basename, dirname } from 'node:path';
+import { join, basename } from 'node:path';
 import { createReadStream, createWriteStream } from 'node:fs';
 import checkIfPathValid from "../../utils/check-if-path-valid.js";
 
