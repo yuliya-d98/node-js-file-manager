@@ -19,7 +19,7 @@ const cliArguments = process.argv.slice(2);
 const username = cliArguments.find((arg) => arg.startsWith('--username')).slice(11);
 
 const usersHomeDirectory = homedir();
-process.chdir(usersHomeDirectory);
+goToDedicatedDirectory(usersHomeDirectory);
 
 const printPathToCurrentDirectory = () => {
     const pathToCurrentDir = process.cwd();
@@ -31,13 +31,9 @@ printPathToCurrentDirectory();
 
 process.stdin.setEncoding('utf8');
 process.stdin.on('data', async (data) => {
-    console.log(data.trim());
-
     const [operationName,  ...params] = data.trim().split(' ');
 
     const operations = [
-        { name: '.exit', method: process.exit },
-
         // Navigation
         { name: 'up', method: goToUpperDirectory },
         { name: 'cd', method: goToDedicatedDirectory },
@@ -60,12 +56,14 @@ process.stdin.on('data', async (data) => {
         // Compress and decompress operations
         { name: 'compress', method: compressFile },
         { name: 'decompress', method: decompressFile },
+
+        { name: '.exit', method: process.exit },
     ]
 
     const currentOperation = operations.find((oper) => oper.name === operationName);
 
     if (currentOperation) {
-        currentOperation.method(...params);
+        await currentOperation.method(...params);
         printPathToCurrentDirectory();
     } else {
         console.log('Invalid input');
